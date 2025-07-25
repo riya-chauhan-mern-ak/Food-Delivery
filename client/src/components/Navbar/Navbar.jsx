@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import { Link } from "react-router-dom";
+import { StoreItemContext } from "../../context/StoreItemContext";
 
-const Navbar = ({setLoginPopup}) => {
+const Navbar = ({ setLoginPopup }) => {
   const [menu, setMenu] = useState("home");
+  const {getTotalCartAmount} = useContext(StoreItemContext)
   const handleNavigate = (link, id) => {
     setMenu(link);
     // document
@@ -16,20 +18,26 @@ const Navbar = ({setLoginPopup}) => {
     //   });
 
     const el = document.querySelector(id);
-    const yOffset = -90; 
+    const yOffset = -90;
     const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
 
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
+  useEffect(()=>{
+    if (window.location.pathname !== "/") {
+      setMenu(null);
+    }
+  })
+
   return (
     <div className="navbar">
-      <img src={assets.logo} alt="" className="logo" />
+      <Link to='/'><img src={assets.logo} alt="" className="logo" /></Link>
       <ul className="navbar-menu">
         <Link
           to={"/"}
           className={menu === "home" && "active"}
-          onClick={() => setMenu("home")}
+          onClick={() => handleNavigate("home", "#header")}
         >
           Home
         </Link>
@@ -55,10 +63,13 @@ const Navbar = ({setLoginPopup}) => {
       <div className="navbar-right">
         <img src={assets.search_icon} alt="" />
         <div className="navbar-search-icon">
-          <img src={assets.basket_icon} alt="" />
-          <div className="dot"></div>
+          <Link to="/cart">
+            {" "}
+            <img src={assets.basket_icon} alt="" />
+          </Link>
+          <div className={getTotalCartAmount() > 0 && 'dot'}></div>
         </div>
-        <button onClick={()=>setLoginPopup(true)}>Sign In</button>
+        <button onClick={() => setLoginPopup(true)}>Sign In</button>
       </div>
     </div>
   );

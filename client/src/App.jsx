@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <>
-      {loginPopup && <LoginPopup />}
+      {loginPopup && <LoginPopup setShowLogin={setLoginPopup} />}
       <div className="app">
         <div className="sticky-navbar">
           <Navbar setLoginPopup={setLoginPopup} />

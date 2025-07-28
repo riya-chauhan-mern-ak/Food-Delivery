@@ -6,12 +6,14 @@ import Cart from "./pages/Cart/Cart";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   const [loginPopup, setLoginPopup] = useState(false);
 
   return (
     <>
+      <ScrollToTop />
       {loginPopup && <LoginPopup setShowLogin={setLoginPopup} />}
       <div className="app">
         <div className="sticky-navbar">

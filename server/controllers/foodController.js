@@ -39,7 +39,7 @@ const getFoodItems = async (req, res) => {
         const foodItems = await foodModel.find({});
         res.status(200).json({
             success: true,
-            foodItems,
+            data:foodItems,
         });
     } catch (error) {
         res.status(500).json({ 

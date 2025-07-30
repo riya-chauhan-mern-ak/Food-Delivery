@@ -1,21 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StoreItemContext } from "../../context/StoreItemContext";
+import { toast } from "react-toastify";
 
 const Navbar = ({ setLoginPopup }) => {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState("home");
-  const {getTotalCartAmount} = useContext(StoreItemContext)
+  const { getTotalCartAmount, token, setToken } = useContext(StoreItemContext);
   const handleNavigate = (link, id) => {
     setMenu(link);
-    // document
-    //   .querySelector(id)
-    //   .scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "center",
-    //     inline: "nearest",
-    //   });
 
     const el = document.querySelector(id);
     const yOffset = -90;
@@ -24,15 +19,24 @@ const Navbar = ({ setLoginPopup }) => {
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
-  useEffect(()=>{
+  const logoutHandler = () => {
+    setToken("");
+    localStorage.removeItem("token");
+    navigate("/");
+    toast.success("Logged out successfully.");
+  };
+
+  useEffect(() => {
     if (window.location.pathname !== "/") {
       setMenu(null);
     }
-  })
+  });
 
   return (
     <div className="navbar">
-      <Link to='/'><img src={assets.logo} alt="" className="logo" /></Link>
+      <Link to="/">
+        <img src={assets.logo} alt="" className="logo" />
+      </Link>
       <ul className="navbar-menu">
         <Link
           to={"/"}
@@ -67,9 +71,26 @@ const Navbar = ({ setLoginPopup }) => {
             {" "}
             <img src={assets.basket_icon} alt="" />
           </Link>
-          <div className={getTotalCartAmount() > 0 && 'dot'}></div>
+          <div className={getTotalCartAmount() > 0 && "dot"}></div>
         </div>
-        <button onClick={() => setLoginPopup(true)}>Sign In</button>
+        {!token ? (
+          <button onClick={() => setLoginPopup(true)}>Sign Up</button>
+        ) : (
+          <div className="navbar-profile">
+            <img src={assets.profile_icon} alt="" />
+            <ul className="nav-profile-dropdown">
+              <li onClick={() => navigate("/order")}>
+                <img src={assets.bag_icon} alt="" />
+                <p>Orders</p>
+              </li>
+              <hr />
+              <li onClick={logoutHandler}>
+                <img src={assets.logout_icon} alt="" />
+                <p>Logout</p>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

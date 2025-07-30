@@ -7,6 +7,8 @@ import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopup from "./components/LoginPopup/LoginPopup";
 import ScrollToTop from "./components/ScrollToTop";
+import { ToastContainer, Bounce } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const [loginPopup, setLoginPopup] = useState(false);
@@ -14,6 +16,16 @@ const App = () => {
   return (
     <>
       <ScrollToTop />
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick={true}
+        rtl={false}
+        theme="light"
+        transition={Bounce}
+      />
       {loginPopup && <LoginPopup setShowLogin={setLoginPopup} />}
       <div className="app">
         <div className="sticky-navbar">

@@ -79,7 +79,7 @@ const Navbar = ({ setLoginPopup }) => {
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="" />
             <ul className="nav-profile-dropdown">
-              <li onClick={() => navigate("/order")}>
+              <li onClick={() => navigate("/my-order")}>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>

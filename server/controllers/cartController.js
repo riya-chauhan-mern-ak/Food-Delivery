@@ -11,6 +11,8 @@ const addToCart = async (req, res) => {
             cartData[req.body.itemId] += 1;
         }
 
+        
+
         await userModel.findByIdAndUpdate(req.userId, { cartData });
         res.status(200).json({
             success: true,

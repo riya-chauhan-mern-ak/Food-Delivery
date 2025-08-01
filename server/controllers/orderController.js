@@ -86,21 +86,21 @@ const verifyOrder = async (req, res) => {
             });
         }
     } catch {
-        res.status(500).json({ 
-            success: false, 
-            message: "Internal Server Error" 
+        res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
         });
     }
 }
 
 
 //get all user orders
-const userOrders = async(req,res)=>{
+const userOrders = async (req, res) => {
     try {
-        const orders = await orderModel.find({userId:req.userId})
+        const orders = await orderModel.find({ userId: req.userId })
         res.status(200).json({
-            success:true,
-            data:orders
+            success: true,
+            data: orders
         })
 
     } catch (error) {
@@ -111,4 +111,40 @@ const userOrders = async(req,res)=>{
     }
 }
 
-export { placeOrder , verifyOrder, userOrders}
+
+//all order listing in admin panel
+const listAllOrders = async (req, res) => {
+    try {
+        const orders = await orderModel.find({});
+        res.status(200).json({
+            success:true,
+            data:orders
+        })
+    } catch (error) {
+        res.status(400).json({
+            success:500,
+            message:"Internal server Error"
+        })
+    }
+}
+
+//for updating order status
+const updateOrderStatus = async(req,res)=>{
+    try {
+        await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status});
+        const order = orderModel.findById(req.body.orderId)
+        
+        res.status(200).json({
+            success:true,
+            message:'Status updated successfully',
+            status:req.body.status
+        })
+    } catch (error) {
+        res.status(500).json({
+            success:false,
+            message:"Internal Server Error"
+        })
+    }
+}
+
+export { placeOrder, verifyOrder, userOrders, listAllOrders, updateOrderStatus }

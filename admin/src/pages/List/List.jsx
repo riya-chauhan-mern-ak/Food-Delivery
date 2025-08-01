@@ -32,29 +32,29 @@ const List = () => {
       .finally(() => setLoading(false));
   };
 
-  const removeItem = async (item) => {
-    await toast.promise(
-      axios.delete(`${baseUrl}/api/food/delete/${item._id}`),
-      {
-        pending: "Deleting food item...",
-        success: {
-          render({ data }) {
-            if (data?.data?.success) {
-              setList((prev) => prev.filter((i) => i._id !== item._id));
-              return "Food item deleted successfully!";
-            } else {
-              throw new Error(data?.data?.message || "Failed to delete item");
-            }
+  const removeItem = async (id) => {      
+      await toast.promise(
+        axios.delete(`${baseUrl}/api/food/delete/${id}`),
+        {
+          pending: "Deleting food item...",
+          success: {
+            render({ data }) {
+              if (data?.data?.success) {
+                setList((prev) => prev.filter((i) => i._id !== id));
+                return "Food item deleted successfully!";
+              } else {
+                throw new Error(data?.data?.message || "Failed to delete item");
+              }
+            },
           },
-        },
-        error: {
-          render({ data }) {
-            return data?.response?.data?.message || "Failed to delete item";
+          error: {
+            render({ data }) {
+              return data?.response?.data?.message || "Failed to delete item";
+            },
           },
-        },
-      }
-    );
-  };
+        }
+      );
+    };
 
   useEffect(() => {
     fetchData();
@@ -98,6 +98,7 @@ const List = () => {
                 image={item?.image}
                 description={item?.description}
                 category={item?.category}
+                removeFun={removeItem}
               />
             );
           })}
